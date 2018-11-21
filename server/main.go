@@ -72,9 +72,11 @@ func GetItem(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	if len(c_item) == 0 {
+		json.NewEncoder(w).Encode("NOT FOUND")
 		fmt.Println("NO EMPTY YOU KNOW?")
 	} else {
 		fmt.Println(c_item)
+		json.NewEncoder(w).Encode(c_item)
 	}
 	//fmt.Println(shop[0].Product)
 }
