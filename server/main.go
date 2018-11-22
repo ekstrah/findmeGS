@@ -72,14 +72,45 @@ func GetItem(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	if len(c_item) == 0 {
+		fmt.Println("NOT EMPTY")
 		json.NewEncoder(w).Encode("NOT FOUND")
-		fmt.Println("NO EMPTY YOU KNOW?")
 	} else {
 		fmt.Println(c_item)
 		json.NewEncoder(w).Encode(c_item)
 	}
 	//fmt.Println(shop[0].Product)
 }
+
+func GetPlace(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	var c_place []Label
+	var item SHOPPY
+
+	_ = json.NewDecoder(r.Body).Decode(&item)
+	for i, _ := range shop{
+		if strings.Compare(shop[i].Location, item.Busan) == 0 {
+
+			c_place = append(c_place, Label{
+				shop[i].Product,
+				shop[i].Date,
+				shop[i].Price,
+				shop[i].Location,
+				shop[i].Brand,
+				shop[i].Sale,
+				shop[i].Opo,
+			})
+			}
+	}
+	if len(c_place) == 0 {
+		fmt.Println("NOT EMPTY");
+		json.NewEncoder(w).Encode("NOT FOUND")
+	} else {
+		fmt.Println(c_place)
+		json.NewEncoder(w).Encode(c_place)
+	}
+}
+
+
 
 // our main function
 func main() {
@@ -88,6 +119,7 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/shop", GetShop).Methods("GET")
 	router.HandleFunc("/item", GetItem).Methods("GET")
+	router.HandleFunc("/place", GetPlace).Methods("GET")
 	log.Fatal(http.ListenAndServe(":8000", router))
 //
 }
