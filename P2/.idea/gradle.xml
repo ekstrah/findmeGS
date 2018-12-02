@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/adapterlist" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/appbar_test" />
+            <option value="$PROJECT_DIR$/recuclerview_test" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

@@ -1,1 +1,1 @@
-include ':app', ':appbar_test', ':adapterlist'
+include ':app', ':appbar_test', ':adapterlist', ':recuclerview_test'
