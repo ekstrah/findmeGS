@@ -1,1 +1,1 @@
-include ':app'
+include ':app', ':appbar_test', ':adapterlist'
