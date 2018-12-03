@@ -13,15 +13,51 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class Product {
-    String name;
-    int price;
-    String explanation;
-    ArrayList<Store> stores;
+    public final String productName;
+    public final String date;
+    public final String price;
+    public final String location;
+    public final String brand;
+    public final String sale;
+    public final String opo;
 
-    public Product(String name, int price, String explanation) {
-        this.name = name;
+
+    public Product(String productName, String date, String price, String location, String brand, String sale, String opo) {
+        this.productName = productName;
+        this.date = date;
         this.price = price;
-        this.explanation = explanation;
+        this.location = location;
+        this.brand = brand;
+        this.sale = sale;
+        this.opo = opo;
+    }
+    public String getProductName()
+    {
+        return productName;
+    }
+    public String getPrice()
+    {
+        return price;
+    }
+    public String getLocation()
+    {
+        return location;
+    }
+    public String getDate()
+    {
+        return date;
+    }
+    public String getBrand()
+    {
+        return brand;
+    }
+    public String getSale()
+    {
+        return sale;
+    }
+    public String getOpo()
+    {
+        return opo;
     }
 }
 
@@ -34,7 +70,7 @@ class ListProductHolder extends RecyclerView.ViewHolder{
 
     public ListProductHolder(View root) {
         super(root);
-        image=(ImageView)root.findViewById(R.id.list_product_image);
+        image=(ImageView)root.findViewById(R.id.list_prodouct_image);
         name=(TextView)root.findViewById(R.id.list_prodouct_name);
         explan=(TextView)root.findViewById(R.id.list_prodouct_explanation);
         opt=(ImageView)root.findViewById(R.id.list_store_opt);
@@ -64,6 +100,16 @@ class ListProdouctAdapter extends RecyclerView.Adapter<ListProductHolder>{
     public ListProductHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(resId, viewGroup, false);
         return new ListProductHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ListProductHolder listProductHolder, int i) {
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return 0;
     }
 
 

@@ -20,7 +20,7 @@
         android:layout_below="@id/list_store_name"
         android:layout_alignLeft="@id/list_store_name"/>
     <ImageView
-        android:id="@+id/list_store_favorit"
+        android:id="@+id/list_store_opt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

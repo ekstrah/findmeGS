@@ -16,6 +16,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 /**
  * Created by kkang
  * 깡샘의 안드로이드 프로그래밍 - 루비페이퍼
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         collapsingToolbarLayout.setTitle("");
 
         this.setTitle("");
+       CommunicationManager.getInstance();
     }
 
     @Override

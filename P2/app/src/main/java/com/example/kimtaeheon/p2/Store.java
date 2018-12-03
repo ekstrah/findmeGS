@@ -27,7 +27,7 @@ public class Store {
     String explanation;
     double latitude;
     double longitude;
-    int price;
+    String  price;
 
     public Store(){}
 
