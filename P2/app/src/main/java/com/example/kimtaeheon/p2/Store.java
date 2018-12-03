@@ -27,6 +27,7 @@ public class Store {
     String explanation;
     double latitude;
     double longitude;
+    int price;
 
     public Store(){}
 
@@ -40,6 +41,7 @@ class ListStoreHolder extends RecyclerView.ViewHolder{
     public ImageView image;
     public TextView name;
     public TextView explan;
+    public ImageView opt;
     public View root;
 
     public ListStoreHolder(View root){
@@ -47,6 +49,7 @@ class ListStoreHolder extends RecyclerView.ViewHolder{
         image=(ImageView)root.findViewById(R.id.list_store_image);
         name=(TextView)root.findViewById(R.id.list_store_name);
         explan=(TextView)root.findViewById(R.id.list_store_explanation);
+        opt=(ImageView)root.findViewById(R.id.list_store_opt);
         this.root=(View)root;
     }
 }
@@ -63,16 +66,22 @@ class ListStoreAdapter  extends RecyclerView.Adapter<ListStoreHolder>{
         this.stores = stores;
     }
 
+    public void changeItem(){
+        for(int i = 0; i < this.getItemCount(); i++){
+            this.notifyItemChanged(i);
+        }
+    }
+
     @NonNull
     @Override
     public ListStoreHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        LayoutInflater inflater =(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view =inflater.inflate(resId, null);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(resId, viewGroup, false);
         return new ListStoreHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListStoreHolder listStoreHolder, int i) {
+    public void onBindViewHolder(@NonNull ListStoreHolder listStoreHolder, final int i) {
+        int index = i;
         final Store store = stores.get(i);
 
         listStoreHolder.name.setText(store.name);
@@ -89,10 +98,10 @@ class ListStoreAdapter  extends RecyclerView.Adapter<ListStoreHolder>{
                     R.drawable.ic_type_image, null));
         }
 
-        listStoreHolder.root.setOnClickListener(new View.OnClickListener() {
+        listStoreHolder.opt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toast=Toast.makeText(context, store.name+" click", Toast.LENGTH_SHORT);
+                Toast toast=Toast.makeText(context, store.name+" add favorit", Toast.LENGTH_SHORT);
                 toast.show();
             }
         });
@@ -101,11 +110,7 @@ class ListStoreAdapter  extends RecyclerView.Adapter<ListStoreHolder>{
     @Override
     public int getItemCount() { return stores.size();}
 
-    public void changeItem(){
-        for(int i = 0; i < this.getItemCount(); i++){
-            this.notifyItemChanged(i);
-        }
-    }
+
 }
 
 class MyItemDecoration extends RecyclerView.ItemDecoration{

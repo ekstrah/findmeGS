@@ -44,7 +44,7 @@ public class CommunicationManager {
     }
 
     //ArrayList를 바꾸고 adapter.changeItem을 호출!
-    public ArrayList<Store> searchProduct(String productName, RecyclerView.Adapter<ListStoreHolder> adapter){
+    public ArrayList<Store> searchProduct(String productName, ListStoreAdapter adapter){
         ArrayList<Store> stores = new ArrayList<>();
 
 
