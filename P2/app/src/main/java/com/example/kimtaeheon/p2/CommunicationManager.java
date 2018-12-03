@@ -54,6 +54,18 @@ public class CommunicationManager {
 
     public ArrayList<Product> initProduct(){
         ArrayList<Product> products = new ArrayList<>();
+        products.add(new Product("sdfa", "adsfdsafsadfsad"));
+        products.add(new Product("asdfdsaf", "asdfdasf"));
+        products.add(new Product("sadfsfad", "fasdfadsfsdafasd."));
+        products.add(new Product("sdfa", "adsfdsafsadfsad"));
+        products.add(new Product("asdfdsaf", "asdfdasf"));
+        products.add(new Product("sadfsfad", "fasdfadsfsdafasd."));
+        products.add(new Product("sdfa", "adsfdsafsadfsad"));
+        products.add(new Product("asdfdsaf", "asdfdasf"));
+        products.add(new Product("sadfsfad", "fasdfadsfsdafasd."));
+        products.add(new Product("sdfa", "adsfdsafsadfsad"));
+        products.add(new Product("asdfdsaf", "asdfdasf"));
+        products.add(new Product("sadfsfad", "fasdfadsfsdafasd."));
 
         return products;
     }

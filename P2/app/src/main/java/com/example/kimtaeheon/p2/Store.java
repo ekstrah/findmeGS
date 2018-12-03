@@ -1,6 +1,7 @@
 package com.example.kimtaeheon.p2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
@@ -98,11 +99,12 @@ class ListStoreAdapter  extends RecyclerView.Adapter<ListStoreHolder>{
                     R.drawable.ic_type_image, null));
         }
 
-        listStoreHolder.opt.setOnClickListener(new View.OnClickListener() {
+        listStoreHolder.root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toast=Toast.makeText(context, store.name+" add favorit", Toast.LENGTH_SHORT);
-                toast.show();
+                Intent intent = new Intent(context, StoreDetailActivity.class);
+                intent.putExtra("EXTRA_SESSION_ID", store.name);
+                context.startActivity(intent);
             }
         });
     }

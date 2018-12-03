@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class ThreeFragment extends Fragment {
     CommunicationManager communicationManager;
-    ListStoreAdapter adapter;
+    ListProdouctAdapter adapter;
 
     @Nullable
     @Override
@@ -28,9 +28,9 @@ public class ThreeFragment extends Fragment {
         RecyclerView recyclerView=(RecyclerView)inflater.inflate(R.layout.fragment_three, container, false);
 
         communicationManager = CommunicationManager.getInstance();
-        ArrayList<Store> stores = communicationManager.initStore();
+        ArrayList<Product> products = communicationManager.initProduct();
 
-        adapter = new ListStoreAdapter(getActivity(), R.layout.list_store, stores);
+        adapter = new ListProdouctAdapter(getActivity(), R.layout.list_product, products);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new MyItemDecoration());
