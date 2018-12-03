@@ -29,17 +29,18 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 import static android.content.Context.LOCATION_SERVICE;
 
-public class OneFragment extends Fragment implements OnMapReadyCallback {
+public class OneFragment extends Fragment implements OnMapReadyCallback,GoogleMap.OnMarkerClickListener {
 
-    private GoogleMap googleMap = null;
+
     private MapView mapView = null;
-    private GoogleApiClient googleApiClient = null;
-    private  Marker currentMarker = null;
     private LocationManager locationManager;
     double latitude = 0.0;
     double longitude = 0.0;
+    CommunicationManager communicationManager;
 
     public OneFragment() {
 
@@ -48,6 +49,7 @@ public class OneFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        communicationManager=CommunicationManager.getInstance();
     }
 
     @Nullable
@@ -178,4 +180,31 @@ public class OneFragment extends Fragment implements OnMapReadyCallback {
 
         }
     };
+    public void setMarkers(ArrayList<Marking> markings,GoogleMap googleMap)
+    {
+        for(int i=0;i<markings.size();i++)
+        {
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(new LatLng(markings.get(i).latitude,markings.get(i).longitude));
+            markerOptions.title(markings.get(i).name);
+            googleMap.addMarker(markerOptions);
+        }
+        googleMap.setOnMarkerClickListener(this);
+    }
+    @Override
+    public boolean onMarkerClick(Marker marker)
+    {
+        //communicationManager.OccurMarkingTouch(maker);
+        return true;
+    }
 }
+
+class Marking{
+    static enum Type {STORE, PRODOUCT};
+
+    String name;
+    double latitude;
+    double longitude;
+    Type type;
+}
+

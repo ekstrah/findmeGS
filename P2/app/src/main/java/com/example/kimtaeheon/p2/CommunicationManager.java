@@ -3,6 +3,8 @@ package com.example.kimtaeheon.p2;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ArrayAdapter;
 
+import com.google.android.gms.maps.model.Marker;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,5 +97,9 @@ public class CommunicationManager {
         });
 
         return products;
+    }
+    public void OccurMarkingTouch(Marker marker)
+    {
+
     }
 }
