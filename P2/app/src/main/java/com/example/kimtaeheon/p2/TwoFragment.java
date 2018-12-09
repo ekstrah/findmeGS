@@ -31,7 +31,7 @@ public class TwoFragment extends Fragment{
         communicationManager = CommunicationManager.getInstance();
         ArrayList<Store> stores = communicationManager.initStore();
 
-        adapter = new ListStoreAdapter(getActivity(), R.layout.list_store, stores);
+        adapter = new ListStoreAdapter(getActivity(), R.layout.list_store, stores, Store.OPT.MIUS);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new MyItemDecoration());

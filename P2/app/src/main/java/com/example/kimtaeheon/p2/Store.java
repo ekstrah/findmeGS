@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.common.api.internal.ListenerHolder;
 
@@ -23,6 +25,9 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 public class Store {
+
+    public enum OPT{NONE, PLUS, MIUS};
+
     String name;
     ArrayList<Product> products;
     String explanation;
@@ -59,12 +64,20 @@ class ListStoreAdapter  extends RecyclerView.Adapter<ListStoreHolder>{
     Context context;
     int resId;
     ArrayList<Store> stores;
+    Store.OPT opt;
 
+    public ListStoreAdapter(Context context, int resource, ArrayList<Store> stores){
+        this(context, resource, stores, Store.OPT.NONE);
+    }
 
-    public ListStoreAdapter(Context context, int resource, ArrayList<Store> stores) {
+    public ListStoreAdapter(Context context, int resource, ArrayList<Store> stores, Store.OPT opt) {
         this.context = context;
         this.resId = resource;
         this.stores = stores;
+        this.opt = opt;
+        if(this.opt == null){
+            this.opt = Store.OPT.NONE;
+        }
     }
 
     public void changeItem(){
@@ -88,6 +101,7 @@ class ListStoreAdapter  extends RecyclerView.Adapter<ListStoreHolder>{
         listStoreHolder.name.setText(store.name);
         listStoreHolder.explan.setText(store.explanation);
 
+        /*
         if(store.name.equals("GS")){
             listStoreHolder.image.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
                     R.drawable.ic_type_doc, null));
@@ -97,6 +111,29 @@ class ListStoreAdapter  extends RecyclerView.Adapter<ListStoreHolder>{
         }else if(store.name.equals("Sibal")){
             listStoreHolder.image.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
                     R.drawable.ic_type_image, null));
+        }
+        */
+
+        if(opt == Store.OPT.PLUS){
+            listStoreHolder.opt.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
+                    R.drawable.plus, null));
+            listStoreHolder.root.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast toast = Toast.makeText(context, store.name + "is plus", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+        }else if(opt == Store.OPT.MIUS){
+            listStoreHolder.opt.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
+                    R.drawable.minus, null));
+            listStoreHolder.root.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast toast = Toast.makeText(context, store.name + "is minus", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
         }
 
         listStoreHolder.root.setOnClickListener(new View.OnClickListener() {
@@ -119,7 +156,7 @@ class MyItemDecoration extends RecyclerView.ItemDecoration{
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
-        outRect.set(20, 20, 20, 20);
+        outRect.set(20, 10, 20, 10);
 
         view.setBackgroundColor(0xFFECE9E9);
         ViewCompat.setElevation(view, 20.0f);

@@ -7,10 +7,12 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface RetrofitExService {
-    String URL = "http://165.227.135.206:8000";
+    String URL = "http://167.99.153.44:8000";
+
 
     @GET("/shop")
-    Call<List<Product>> getItem(@Query("productName") String productName);
+    Call<List<Product>> getItem();
+    //Call<List<Product>> getItem(@Query("busan") String productName);
 
     @GET("/shop")
     Call<List<Product>> getLocation(@Query("location") String location);

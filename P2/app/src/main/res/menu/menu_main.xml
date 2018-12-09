@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menu_main_mic"
+        android:id="@+id/menu_main_serach"
         android:title="MIC"
         android:icon="@drawable/ic_mic"
         app:showAsAction="always"/>

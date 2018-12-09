@@ -10,6 +10,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -29,7 +31,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     ViewPager viewPager;
     Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
+    EditText editText;
     Toast toast;
+    CommunicationManager communicationManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +42,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         setContentView(R.layout.activity_main);
 
         toolbar=(Toolbar)findViewById(R.id.toolbar);
+        editText=(EditText)findViewById(R.id.toolbar_title);
+
         setSupportActionBar(toolbar);
+
+        communicationManager = CommunicationManager.getInstance();
 
         viewPager=(ViewPager)findViewById(R.id.viewpager);
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
@@ -51,13 +60,25 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         this.setTitle("");
        CommunicationManager.getInstance();
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.menu_main_serach){
+            String search = editText.getText().toString();
+            toast = Toast.makeText(MainActivity.this, search, Toast.LENGTH_SHORT);
+            toast.show();
+            communicationManager.searchProduct(search, null);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     class MyPagerAdapter extends FragmentStatePagerAdapter {

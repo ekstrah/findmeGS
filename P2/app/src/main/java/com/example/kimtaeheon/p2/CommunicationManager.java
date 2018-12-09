@@ -1,6 +1,7 @@
 package com.example.kimtaeheon.p2;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import com.google.android.gms.maps.model.Marker;
@@ -13,6 +14,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+
 
 public class CommunicationManager {
     private static Retrofit retrofit;
@@ -73,12 +76,19 @@ public class CommunicationManager {
     //ArrayList를 바꾸고 adapter.changeItem을 호출!
     public ArrayList<Product> searchProduct(String productName, ListStoreAdapter adapter){
         final ArrayList<Product> products = new ArrayList();
-        retrofitExService.getItem(productName).enqueue(new Callback<List<Product>>() {
+        Log.d("haha : ",productName);
+        retrofitExService.getItem().enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                 if(response.isSuccessful())
                 {
-                    products.addAll(response.body());
+                    List <Product> producted = response.body();
+                    //if(products!=null)
+                    //{
+                        for(int i=0;i<producted.size();i++)
+                        Log.e("abd : "+i,producted.get(i).getProductName());
+                    //}
+
                 }
             }
 
@@ -99,6 +109,10 @@ public class CommunicationManager {
                 if(response.isSuccessful())
                 {
                     products.addAll(response.body());
+                    /*if(products!=null)
+                    {
+                        Log.d("name : ",products.get(0).name);
+                    }*/
                 }
             }
 
