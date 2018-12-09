@@ -10,8 +10,8 @@ public interface RetrofitExService {
     String URL = "http://167.99.153.44:8000";
 
 
-    @GET("/shop")
-    Call<List<Product>> getItem();
+    @GET("/item")
+    Call<List<Product>> getItem(@Query("productName") String productName);
     //Call<List<Product>> getItem(@Query("busan") String productName);
 
     @GET("/shop")

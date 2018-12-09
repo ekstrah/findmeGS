@@ -6,6 +6,7 @@ import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class Product {
+    public enum OPT{NONE, PLUS, MIUS};
+
     public String name;
     public final String productName;
     public final String date;
@@ -94,6 +97,17 @@ class ListProdouctAdapter extends RecyclerView.Adapter<ListProductHolder>{
     Context context;
     int resId;
     ArrayList<Product> products;
+    Product.OPT opt;
+
+    public ListProdouctAdapter(Context context, int resId, ArrayList<Product> products, Product.OPT opt) {
+        this.context = context;
+        this.resId = resId;
+        this.products = products;
+        this.opt = opt;
+        if(this.opt == null){
+            this.opt = Product.OPT.PLUS;
+        }
+    }
 
     public ListProdouctAdapter(Context context, int resId, ArrayList<Product> products) {
         this.context = context;
@@ -115,12 +129,13 @@ class ListProdouctAdapter extends RecyclerView.Adapter<ListProductHolder>{
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListProductHolder listProductHolder, int i) {
+    public void onBindViewHolder(@NonNull final ListProductHolder listProductHolder, int i) {
         final Product product = products.get(i);
 
         listProductHolder.name.setText(product.name);
         listProductHolder.explan.setText(product.exlpan);
 
+        /*
         if(product.name.equals("sdfa")){
             listProductHolder.image.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
                     R.drawable.ic_type_doc, null));
@@ -131,13 +146,39 @@ class ListProdouctAdapter extends RecyclerView.Adapter<ListProductHolder>{
             listProductHolder.image.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
                     R.drawable.ic_type_image, null));
         }
+        */
+        if(opt == Product.OPT.PLUS){
+            listProductHolder.opt.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
+                    R.drawable.plus, null));
+        }else if(opt == Product.OPT.MIUS){
+            listProductHolder.opt.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
+                    R.drawable.minus, null));
+        }
 
-        listProductHolder.root.setOnClickListener(new View.OnClickListener() {
+
+        listProductHolder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ProdouctDetailActivity.class);
-                intent.putExtra("EXTRA_SESSION_ID", product.name);
-                context.startActivity(intent);
+
+                    Toast toast = Toast.makeText(context, product.name + "check in!", Toast.LENGTH_SHORT);
+                    toast.show();
+                    /*
+                    Intent intent = new Intent(context, ProdouctDetailActivity.class);
+                    intent.putExtra("EXTRA_SESSION_ID", product.name);
+                    context.startActivity(intent);
+                    */
+            }
+        });
+        listProductHolder.opt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(opt == Product.OPT.PLUS){
+                    Toast toast = Toast.makeText(context, product.name + "is plus", Toast.LENGTH_SHORT);
+                    toast.show();
+                }else if(opt == Product.OPT.MIUS) {
+                    Toast toast = Toast.makeText(context, product.name + "is minus", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
             }
         });
     }

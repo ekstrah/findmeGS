@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class StoreDetailActivity extends AppCompatActivity {
     CommunicationManager communicationManager;
-    ListStoreAdapter adapter;
+    ListProdouctAdapter adapter;
     String storeName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,9 +19,9 @@ public class StoreDetailActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.detail_store_recyclerview);
 
         communicationManager = CommunicationManager.getInstance();
-        ArrayList<Store> stores = communicationManager.initStore();
+        ArrayList<Product> products = communicationManager.initProduct();
 
-        adapter = new ListStoreAdapter(this, R.layout.list_store, stores);
+        adapter = new ListProdouctAdapter(this, R.layout.list_product, products, Product.OPT.PLUS);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new MyItemDecoration());

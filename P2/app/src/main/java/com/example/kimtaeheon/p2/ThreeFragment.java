@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class ThreeFragment extends Fragment {
     CommunicationManager communicationManager;
     ListProdouctAdapter adapter;
+    Product.OPT opt = null;
 
     @Nullable
     @Override
@@ -30,7 +31,7 @@ public class ThreeFragment extends Fragment {
         communicationManager = CommunicationManager.getInstance();
         ArrayList<Product> products = communicationManager.initProduct();
 
-        adapter = new ListProdouctAdapter(getActivity(), R.layout.list_product, products);
+        adapter = new ListProdouctAdapter(getActivity(), R.layout.list_product, products, opt);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new MyItemDecoration());

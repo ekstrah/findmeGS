@@ -83,12 +83,14 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     class MyPagerAdapter extends FragmentStatePagerAdapter {
         List<Fragment> fragments=new ArrayList<>();
-        String titles[]=new String[]{"Tab1", "Tab2","Tab3"};
+        String titles[]=new String[]{"", "",""};
         public MyPagerAdapter(FragmentManager fm){
             super(fm);
             fragments.add(new TwoFragment());
-            fragments.add(new TwoFragment());
             fragments.add(new ThreeFragment());
+            ThreeFragment f = new ThreeFragment();
+            f.opt = Product.OPT.MIUS;
+            fragments.add(f);
         }
 
         @Override

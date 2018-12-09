@@ -3,6 +3,8 @@ package com.example.kimtaeheon.p2;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewCompat;
@@ -113,27 +115,12 @@ class ListStoreAdapter  extends RecyclerView.Adapter<ListStoreHolder>{
                     R.drawable.ic_type_image, null));
         }
         */
-
         if(opt == Store.OPT.PLUS){
             listStoreHolder.opt.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
                     R.drawable.plus, null));
-            listStoreHolder.root.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast toast = Toast.makeText(context, store.name + "is plus", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
         }else if(opt == Store.OPT.MIUS){
             listStoreHolder.opt.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
                     R.drawable.minus, null));
-            listStoreHolder.root.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast toast = Toast.makeText(context, store.name + "is minus", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
         }
 
         listStoreHolder.root.setOnClickListener(new View.OnClickListener() {

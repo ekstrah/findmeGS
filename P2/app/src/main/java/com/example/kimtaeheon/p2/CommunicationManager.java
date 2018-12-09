@@ -6,6 +6,8 @@ import android.widget.ArrayAdapter;
 
 import com.google.android.gms.maps.model.Marker;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +33,10 @@ public class CommunicationManager {
             synchronized (CommunicationManager.class){
                 if(communicationManager==null){
                     communicationManager= new CommunicationManager();
-                    retrofit = new Retrofit.Builder().baseUrl(RetrofitExService.URL).addConverterFactory(GsonConverterFactory.create()).build();
+                    retrofit = new Retrofit.Builder()
+                            .baseUrl(RetrofitExService.URL)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
                     retrofitExService = retrofit.create(RetrofitExService.class);
                 }
             }
@@ -77,18 +82,30 @@ public class CommunicationManager {
     public ArrayList<Product> searchProduct(String productName, ListStoreAdapter adapter){
         final ArrayList<Product> products = new ArrayList();
         Log.d("haha : ",productName);
-        retrofitExService.getItem().enqueue(new Callback<List<Product>>() {
+        String URLname = null;
+        try {
+            URLname = URLEncoder.encode(productName,"UTF-8");
+            Log.e("url : ",URLname);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        retrofitExService.getItem(URLname).enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                if(response.isSuccessful())
-                {
-                    List <Product> producted = response.body();
-                    //if(products!=null)
-                    //{
-                        for(int i=0;i<producted.size();i++)
-                        Log.e("abd : "+i,producted.get(i).getProductName());
-                    //}
+                if (response.isSuccessful()) {
+                    products.addAll(response.body());
+                    if (products != null) {
+                        for (int i = 0; i < 20; i++) {
+                            Log.e("data" + i, products.get(i).getProductName() + "");
+                            Log.e("data" + i, products.get(i).getDate() + "");
+                            Log.e("data" + i, products.get(i).getPrice() + "");
+                            Log.e("data" + i, products.get(i).getLocation() + "");
+                            Log.e("data" + i, products.get(i).getBrand() + "");
+                            Log.e("data" + i, products.get(i).getSale() + "");
+                            Log.e("data" + i, products.get(i).getOpo() + "");
+                        }
 
+                    }
                 }
             }
 
