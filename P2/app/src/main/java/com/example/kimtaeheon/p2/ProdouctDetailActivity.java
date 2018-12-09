@@ -27,8 +27,8 @@ public class ProdouctDetailActivity extends AppCompatActivity {
         explan=(TextView)findViewById(R.id.prodouct_detail_explanation);
 
         communicationManager = CommunicationManager.getInstance();
-        ArrayList<Store> stores = communicationManager.initStore();
         product = communicationManager.changeActivityProduct(null);
+        ArrayList<Store> stores = communicationManager.searchProduct(product.name, null);
 
         name.setText(product.name);
         explan.setText(product.exlpan);

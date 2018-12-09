@@ -10,6 +10,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.PortUnreachableException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -21,14 +23,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class CommunicationManager {
-    private static Retrofit retrofit;
-    private static RetrofitExService retrofitExService;
-
     private Product product;
     private Store store;
     private ArrayList<Product> favorit_products = new ArrayList<>();
     private ListProdouctAdapter adapter;
-
+    private  ArrayList<Product> products;
 
     private static volatile CommunicationManager communicationManager = null;
 
@@ -39,11 +38,7 @@ public class CommunicationManager {
             synchronized (CommunicationManager.class){
                 if(communicationManager==null){
                     communicationManager= new CommunicationManager();
-                    retrofit = new Retrofit.Builder()
-                            .baseUrl(RetrofitExService.URL)
-                            .addConverterFactory(GsonConverterFactory.create())
-                            .build();
-                    retrofitExService = retrofit.create(RetrofitExService.class);
+
                 }
             }
         }
@@ -53,6 +48,11 @@ public class CommunicationManager {
 
     public ArrayList<Store> initStore(){
         ArrayList<Store> stores = new ArrayList<>();
+        for(int i = 0;i<10;i++)
+        {
+            stores.add(new Store(products.get(i).getLocation(), products.get(i).getSale()));
+        }
+        /*
         stores.add(new Store("GS", "Gs very very good~"));
         stores.add(new Store("CU","CU dosikrock is delicious"));
         stores.add(new Store("Sibal", "Sibal asdfkljaskj"));
@@ -62,13 +62,18 @@ public class CommunicationManager {
         stores.add(new Store("GS", "Gs very very good~"));
         stores.add(new Store("CU","CU dosikrock is delicious"));
         stores.add(new Store("Sibal", "Sibal asdfkljaskj"));
+        */
 
         return stores;
     }
 
     public ArrayList<Product> initProduct(){
         ArrayList<Product> products = new ArrayList<>();
-        products.add(new Product("sdfa", "adsfdsafsadfsad"));
+        for(int i = 0;i<10;i++)
+        {
+            products.add(new Product(this.products.get(i).getProductName(), this.products.get(i).getPrice()));
+        }
+        /*products.add(new Product("sdfa", "adsfdsafsadfsad"));
         products.add(new Product("asdfdsaf", "asdfdasf"));
         products.add(new Product("sadfsfad", "fasdfadsfsdafasd."));
         products.add(new Product("sdfa", "adsfdsafsadfsad"));
@@ -79,77 +84,44 @@ public class CommunicationManager {
         products.add(new Product("sadfsfad", "fasdfadsfsdafasd."));
         products.add(new Product("sdfa", "adsfdsafsadfsad"));
         products.add(new Product("asdfdsaf", "asdfdasf"));
-        products.add(new Product("sadfsfad", "fasdfadsfsdafasd."));
+        products.add(new Product("sadfsfad", "fasdfadsfsdafasd."));*/
 
         return products;
     }
 
     //ArrayList를 바꾸고 adapter.changeItem을 호출!
-    public ArrayList<Product> searchProduct(String productName, ListStoreAdapter adapter){
-        final ArrayList<Product> products = new ArrayList();
-        Log.d("haha : ",productName);
-        String URLname = null;
-        try {
-            URLname = URLEncoder.encode(productName,"UTF-8");
-            Log.e("url : ",URLname);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+    public ArrayList<Store> searchProduct(String productName, ListStoreAdapter adapter){
+        final ArrayList<Store> sp = new ArrayList();
+        for(int i = 0;i<products.size();i++)
+        {
+            if(productName.equals(products.get(i).getProductName()))
+            {
+                sp.add(new Store(products.get(i).getLocation(),products.get(i).getPrice()));
+            }
         }
-        retrofitExService.getItem(URLname).enqueue(new Callback<List<Product>>() {
-            @Override
-            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                if (response.isSuccessful()) {
-                    products.addAll(response.body());
-                    if (products != null) {
-                        for (int i = 0; i < 20; i++) {
-                            Log.e("data" + i, products.get(i).getProductName() + "");
-                            Log.e("data" + i, products.get(i).getDate() + "");
-                            Log.e("data" + i, products.get(i).getPrice() + "");
-                            Log.e("data" + i, products.get(i).getLocation() + "");
-                            Log.e("data" + i, products.get(i).getBrand() + "");
-                            Log.e("data" + i, products.get(i).getSale() + "");
-                            Log.e("data" + i, products.get(i).getOpo() + "");
-                        }
-
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Product>> call, Throwable t) {
-
-            }
-        });
-
-        return products;
+        Collections.sort(sp, new AscendingInteger());
+        return sp;
     }
 
     public ArrayList<Product> searchStroe(String storeName, RecyclerView.Adapter<ListStoreHolder> adapter){
-        final ArrayList<Product> products = new ArrayList<>();
-        retrofitExService.getLocation(storeName).enqueue(new Callback<List<Product>>() {
-            @Override
-            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                if(response.isSuccessful())
-                {
-                    products.addAll(response.body());
-                    /*if(products!=null)
-                    {
-                        Log.d("name : ",products.get(0).name);
-                    }*/
-                }
+        final ArrayList<Product> pr = new ArrayList<>();
+        for(int i = 0;i<products.size();i++)
+        {
+            if(storeName.equals(products.get(i).getLocation()))
+            {
+                pr.add(new Product(products.get(i).getProductName(),products.get(i).getPrice()));
             }
-
-            @Override
-            public void onFailure(Call<List<Product>> call, Throwable t) {
-
-            }
-        });
-
-        return products;
+        }
+        return pr;
     }
-    public void OccurMarkingTouch(Marker marker)
+    public void OccurMarkingTouch(ArrayList<Marker> marker)
     {
 
+    }
+
+    public void setProducts(ArrayList products)
+    {
+        this.products=products;
     }
 
     public void setFavoritProductsAdapter(ListProdouctAdapter adapter){
@@ -179,5 +151,18 @@ public class CommunicationManager {
     }
     public void selectedTab(int p){
 
+    }
+}
+
+class AscendingInteger implements Comparator<Store> {
+
+    @Override
+    public int compare(Store o1, Store o2) {
+        int o1Data, o2Data;
+
+        o1Data = Integer.parseInt(o1.explanation);
+        o2Data = Integer.parseInt(o2.explanation);
+
+        return Integer.compare(o1Data, o2Data);
     }
 }

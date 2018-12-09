@@ -9,12 +9,11 @@ import retrofit2.http.Query;
 public interface RetrofitExService {
     String URL = "http://167.99.153.44:8000";
 
-
-    @GET("/item")
-    Call<List<Product>> getItem(@Query("productName") String productName);
+    @GET("/shop")
+    Call<List<Product>> getItem();
     //Call<List<Product>> getItem(@Query("busan") String productName);
 
     @GET("/shop")
-    Call<List<Product>> getLocation(@Query("location") String location);
+    Call<List<Product>> getLocation();
 
 }

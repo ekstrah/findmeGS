@@ -1,5 +1,6 @@
 package com.example.kimtaeheon.p2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -18,8 +20,13 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static java.lang.Thread.sleep;
 
 /**
  * Created by kkang
@@ -34,19 +41,58 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     EditText editText;
     Toast toast;
     CommunicationManager communicationManager;
-
+    private static Retrofit retrofit;
+    private static RetrofitExService retrofitExService;
+    private static ArrayList<Product> products = new ArrayList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        retrofit = new Retrofit.Builder()
+                .baseUrl(RetrofitExService.URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        retrofitExService = retrofit.create(RetrofitExService.class);
+        retrofitExService.getItem().enqueue(new Callback<List<Product>>() {
+            @Override
+            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                if (response.isSuccessful()) {
+                    Log.e("start","");
+                    products.addAll(response.body());
+                    /*if (products != null) {
+                        for (int i = 0; i < 20; i++) {
+                            Log.e("data" + i, products.get(i).getProductName() + "");
+                            Log.e("data" + i, products.get(i).getDate() + "");
+                            Log.e("data" + i, products.get(i).getPrice() + "");
+                            Log.e("data" + i, products.get(i).getLocation() + "");
+                            Log.e("data" + i, products.get(i).getBrand() + "");
+                            Log.e("data" + i, products.get(i).getSale() + "");
+                            Log.e("data" + i, products.get(i).getOpo() + "");
+                        }
+
+                    }*/
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Product>> call, Throwable t) {
+
+            }
+        });
 
         toolbar=(Toolbar)findViewById(R.id.toolbar);
         editText=(EditText)findViewById(R.id.toolbar_title);
 
         setSupportActionBar(toolbar);
+        try {
+            sleep(8000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         communicationManager = CommunicationManager.getInstance();
+        communicationManager.setProducts(products);
 
         viewPager=(ViewPager)findViewById(R.id.viewpager);
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
@@ -75,7 +121,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             String search = editText.getText().toString();
             toast = Toast.makeText(MainActivity.this, search, Toast.LENGTH_SHORT);
             toast.show();
-            communicationManager.searchProduct(search, null);
+            CommunicationManager.getInstance().changeActivityProduct(new Product(search, ""));
+            Intent intent = new Intent(this, ProdouctDetailActivity.class);
+            this.startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
