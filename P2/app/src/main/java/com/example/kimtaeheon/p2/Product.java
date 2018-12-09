@@ -20,7 +20,7 @@ public class Product {
     public enum OPT{NONE, PLUS, MIUS};
 
     public String name;
-    public final String productName;
+    public final String proudctName;
     public final String date;
     public final String price;
     public final String location;
@@ -30,8 +30,8 @@ public class Product {
     public String exlpan;
 
 
-    public Product(String productName, String date, String price, String location, String brand, String sale, String opo) {
-        this.productName = productName;
+    public Product(String proudctName, String date, String price, String location, String brand, String sale, String opo) {
+        this.proudctName = proudctName;
         this.date = date;
         this.price = price;
         this.location = location;
@@ -40,15 +40,15 @@ public class Product {
         this.opo = opo;
     }
 
-    public Product(String productName, String exlpan) {
-        this(productName, "", "", "", "", "", "");
+    public Product(String proudctName, String exlpan) {
+        this(proudctName, "", "", "", "", "", "");
         this.exlpan = exlpan;
-        this.name = productName;
+        this.name = proudctName;
     }
 
     public String getProductName()
     {
-        return productName;
+        return proudctName;
     }
     public String getPrice()
     {
@@ -175,8 +175,9 @@ class ListProdouctAdapter extends RecyclerView.Adapter<ListProductHolder>{
                 }else if(opt == Product.OPT.MIUS) {
                     Toast toast = Toast.makeText(context, product.name + "is minus", Toast.LENGTH_SHORT);
                     toast.show();
-                    products.remove(index);
-                    notifyItemRemoved(index);
+                    int a = products.indexOf(product);
+                    products.remove(a);
+                    notifyItemRemoved( a);
                 }
             }
         });

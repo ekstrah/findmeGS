@@ -58,20 +58,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             @Override
             public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                 if (response.isSuccessful()) {
-                    Log.e("start","");
                     products.addAll(response.body());
-                    /*if (products != null) {
-                        for (int i = 0; i < 20; i++) {
-                            Log.e("data" + i, products.get(i).getProductName() + "");
-                            Log.e("data" + i, products.get(i).getDate() + "");
-                            Log.e("data" + i, products.get(i).getPrice() + "");
-                            Log.e("data" + i, products.get(i).getLocation() + "");
-                            Log.e("data" + i, products.get(i).getBrand() + "");
-                            Log.e("data" + i, products.get(i).getSale() + "");
-                            Log.e("data" + i, products.get(i).getOpo() + "");
-                        }
-
-                    }*/
                 }
             }
 
@@ -86,12 +73,13 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         setSupportActionBar(toolbar);
         try {
-            sleep(8000);
+            sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
         communicationManager = CommunicationManager.getInstance();
+        Log.e("Num",""+products.size());
         communicationManager.setProducts(products);
 
         viewPager=(ViewPager)findViewById(R.id.viewpager);
@@ -143,10 +131,14 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         @Override
         public Fragment getItem(int position) {
-            Fragment f = fragments.get(position);
-
-
-            return f;
+            toast = Toast.makeText(MainActivity.this, position + "", Toast.LENGTH_SHORT);
+            toast.show();
+            if(position == 3) {
+                ThreeFragment f = (ThreeFragment) fragments.get(position);
+                f.adapter.notifyItemRangeChanged(0, f.adapter.getItemCount());
+                return f;
+            }
+            return fragments.get(position);
         }
 
         @Override

@@ -119,6 +119,7 @@ public class OneFragment extends Fragment implements OnMapReadyCallback,GoogleMa
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        startLocationService();
         LatLng Current = new LatLng(latitude, longitude);
 
         MarkerOptions markerOptions = new MarkerOptions();

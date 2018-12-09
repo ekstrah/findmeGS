@@ -48,6 +48,9 @@ public class CommunicationManager {
 
     public ArrayList<Store> initStore(){
         ArrayList<Store> stores = new ArrayList<>();
+        if(products == null){
+            return stores;
+        }
         for(int i = 0;i<10;i++)
         {
             stores.add(new Store(products.get(i).getLocation(), products.get(i).getSale()));
@@ -69,6 +72,9 @@ public class CommunicationManager {
 
     public ArrayList<Product> initProduct(){
         ArrayList<Product> products = new ArrayList<>();
+        if(this.products == null){
+            return products;
+        }
         for(int i = 0;i<10;i++)
         {
             products.add(new Product(this.products.get(i).getProductName(), this.products.get(i).getPrice()));
@@ -130,7 +136,6 @@ public class CommunicationManager {
 
     public void addFavoirtProduct(Product product){
         this.favorit_products.add(product);
-        adapter.notifyItemInserted(adapter.getItemCount()-1);
     }
 
     public ArrayList<Product> getFavorit_products() {
