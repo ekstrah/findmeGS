@@ -131,6 +131,7 @@ class ListProdouctAdapter extends RecyclerView.Adapter<ListProductHolder>{
     @Override
     public void onBindViewHolder(@NonNull final ListProductHolder listProductHolder, int i) {
         final Product product = products.get(i);
+        final int index = i;
 
         listProductHolder.name.setText(product.name);
         listProductHolder.explan.setText(product.exlpan);
@@ -156,17 +157,12 @@ class ListProdouctAdapter extends RecyclerView.Adapter<ListProductHolder>{
         }
 
 
-        listProductHolder.image.setOnClickListener(new View.OnClickListener() {
+        listProductHolder.image.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-
-                    Toast toast = Toast.makeText(context, product.name + "check in!", Toast.LENGTH_SHORT);
-                    toast.show();
-                    /*
-                    Intent intent = new Intent(context, ProdouctDetailActivity.class);
-                    intent.putExtra("EXTRA_SESSION_ID", product.name);
-                    context.startActivity(intent);
-                    */
+                CommunicationManager.getInstance().changeActivityProduct(product);
+                Intent intent = new Intent(context, ProdouctDetailActivity.class);
+                context.startActivity(intent);
             }
         });
         listProductHolder.opt.setOnClickListener(new View.OnClickListener() {
@@ -175,9 +171,12 @@ class ListProdouctAdapter extends RecyclerView.Adapter<ListProductHolder>{
                 if(opt == Product.OPT.PLUS){
                     Toast toast = Toast.makeText(context, product.name + "is plus", Toast.LENGTH_SHORT);
                     toast.show();
+                    CommunicationManager.getInstance().addFavoirtProduct(product);
                 }else if(opt == Product.OPT.MIUS) {
                     Toast toast = Toast.makeText(context, product.name + "is minus", Toast.LENGTH_SHORT);
                     toast.show();
+                    products.remove(index);
+                    notifyItemRemoved(index);
                 }
             }
         });

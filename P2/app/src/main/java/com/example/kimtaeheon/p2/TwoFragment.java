@@ -22,6 +22,7 @@ import java.util.ArrayList;
 public class TwoFragment extends Fragment{
     CommunicationManager communicationManager;
     ListStoreAdapter adapter;
+    ArrayList<Store> stores;
 
     @Nullable
     @Override
@@ -29,7 +30,7 @@ public class TwoFragment extends Fragment{
         RecyclerView recyclerView=(RecyclerView)inflater.inflate(R.layout.fragment_two, container, false);
 
         communicationManager = CommunicationManager.getInstance();
-        ArrayList<Store> stores = communicationManager.initStore();
+        stores = communicationManager.initStore();
 
         adapter = new ListStoreAdapter(getActivity(), R.layout.list_store, stores);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

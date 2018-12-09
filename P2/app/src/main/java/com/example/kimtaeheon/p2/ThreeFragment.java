@@ -22,6 +22,7 @@ public class ThreeFragment extends Fragment {
     CommunicationManager communicationManager;
     ListProdouctAdapter adapter;
     Product.OPT opt = null;
+    ArrayList<Product> products;
 
     @Nullable
     @Override
@@ -29,13 +30,26 @@ public class ThreeFragment extends Fragment {
         RecyclerView recyclerView=(RecyclerView)inflater.inflate(R.layout.fragment_three, container, false);
 
         communicationManager = CommunicationManager.getInstance();
-        ArrayList<Product> products = communicationManager.initProduct();
+        if(opt == Product.OPT.MIUS){
+            products = communicationManager.getFavorit_products();
 
-        adapter = new ListProdouctAdapter(getActivity(), R.layout.list_product, products, opt);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new MyItemDecoration());
+            adapter = new ListProdouctAdapter(getActivity(), R.layout.list_product, products, opt);
+            communicationManager.setFavoritProductsAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            recyclerView.setAdapter(adapter);
+            recyclerView.addItemDecoration(new MyItemDecoration());
+        }else{
+            ArrayList<Product> products = communicationManager.initProduct();
+
+            adapter = new ListProdouctAdapter(getActivity(), R.layout.list_product, products, opt);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            recyclerView.setAdapter(adapter);
+            recyclerView.addItemDecoration(new MyItemDecoration());
+        }
+
 
         return recyclerView;
     }
+
+
 }

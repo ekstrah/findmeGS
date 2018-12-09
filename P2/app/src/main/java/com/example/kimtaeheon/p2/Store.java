@@ -115,19 +115,12 @@ class ListStoreAdapter  extends RecyclerView.Adapter<ListStoreHolder>{
                     R.drawable.ic_type_image, null));
         }
         */
-        if(opt == Store.OPT.PLUS){
-            listStoreHolder.opt.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
-                    R.drawable.plus, null));
-        }else if(opt == Store.OPT.MIUS){
-            listStoreHolder.opt.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
-                    R.drawable.minus, null));
-        }
 
         listStoreHolder.root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, StoreDetailActivity.class);
-                intent.putExtra("EXTRA_SESSION_ID", store.name);
+                CommunicationManager.getInstance().changeActivityStore(store);
                 context.startActivity(intent);
             }
         });

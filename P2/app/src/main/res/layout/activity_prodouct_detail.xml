@@ -9,8 +9,37 @@
     <RelativeLayout
         android:id="@+id/detail_product_head"
         android:layout_width="match_parent"
-        android:layout_height="214dp"
-        android:background="@android:color/holo_red_dark"></RelativeLayout>
+        android:background="#ffffff"
+        android:layout_height="224dp">
+
+        <ImageView
+            android:layout_width="194dp"
+            android:id="@+id/prodouct_detail_image"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/product_image"/>
+
+        <TextView
+            android:id="@+id/prodouct_detail_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:text="GS_산격점"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/prodouct_detail_image"
+            android:layout_marginLeft="8dp"/>
+        <TextView
+            android:id="@+id/prodouct_detail_explanation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="정말 정말 좋으 위치에 있는 상점 인디용&#10;위치 : 산격동 홍길동 22번지"
+            android:layout_marginTop="4dp"
+            android:layout_below="@id/prodouct_detail_name"
+            android:layout_alignLeft="@id/prodouct_detail_name"/>
+
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/detail_product_recyclerview"

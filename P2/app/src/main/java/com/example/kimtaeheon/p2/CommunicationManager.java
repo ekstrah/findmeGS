@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter;
 import com.google.android.gms.maps.model.Marker;
 
 import java.io.UnsupportedEncodingException;
+import java.net.PortUnreachableException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class CommunicationManager {
     private static Retrofit retrofit;
     private static RetrofitExService retrofitExService;
+
+    private Product product;
+    private Store store;
+    private ArrayList<Product> favorit_products = new ArrayList<>();
+    private ListProdouctAdapter adapter;
 
 
     private static volatile CommunicationManager communicationManager = null;
@@ -143,6 +149,35 @@ public class CommunicationManager {
     }
     public void OccurMarkingTouch(Marker marker)
     {
+
+    }
+
+    public void setFavoritProductsAdapter(ListProdouctAdapter adapter){
+        this.adapter = adapter;
+    }
+
+    public void addFavoirtProduct(Product product){
+        this.favorit_products.add(product);
+        adapter.notifyItemInserted(adapter.getItemCount()-1);
+    }
+
+    public ArrayList<Product> getFavorit_products() {
+        return favorit_products;
+    }
+
+    public Store changeActivityStore(Store store){
+        if(store != null){
+            this.store = store;
+        }
+        return this.store;
+    }
+    public Product changeActivityProduct(Product product){
+        if(product != null){
+            this.product = product;
+        }
+        return this.product;
+    }
+    public void selectedTab(int p){
 
     }
 }

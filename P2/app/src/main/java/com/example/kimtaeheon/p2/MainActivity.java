@@ -95,9 +95,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         @Override
         public Fragment getItem(int position) {
-            toast = Toast.makeText(MainActivity.this, "getItem", Toast.LENGTH_SHORT);
-            toast.show();
-            return fragments.get(position);
+            Fragment f = fragments.get(position);
+
+
+            return f;
         }
 
         @Override
@@ -113,8 +114,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        toast = Toast.makeText(MainActivity.this, "onTabSelected", Toast.LENGTH_SHORT);
-        toast.show();
         viewPager.setCurrentItem(tab.getPosition());
     }
 
