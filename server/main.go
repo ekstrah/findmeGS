@@ -2,10 +2,12 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"encoding/csv"
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -42,14 +44,12 @@ type eachShop struct {
 	Product []LabelMin `json:"products"`
 }
 
-type shopNamy struct {
-	Name string `json: "busan"`
+type currentLocation struct {
+	Lat string `json: "lat"`
+	Lng string `json: "lng"`
 }
-type shopAddress struct {
-	Name string  `json: "shopName"`
-	lat  float64 `json: "lat"`
-	lng  float64 `json: "lng"`
-}
+
+type M map[string]interface{}
 
 var shop []Label
 var shopName []string
@@ -58,6 +58,34 @@ var shoppingList []eachShop
 
 func init() {
 	raven.SetDSN("https://cf077f2871f44a1ba7861c38fbe65c59:4147153d16634737b0ca2246d562b5ef@sentry.io/1328225")
+}
+
+func makeHttpPostReq(currentLoc currentLocation) []string {
+	var listOfShop []string
+	fmt.Println("Starting to send the POST Request")
+	jsonData, err := json.Marshal(M{"currentLocation": M{"lat": currentLoc.Lat, "lng": currentLoc.Lng}})
+	if err != nil {
+		log.Fatalln(err)
+	}
+	request, _ := http.NewRequest("POST", "http://localhost:5000/shoploc", bytes.NewBuffer(jsonData))
+	request.Header.Set("Content-Type", "application/json")
+	client := &http.Client{}
+	response, err := client.Do(request)
+
+	if err != nil {
+		fmt.Println("The HTTP request failed with error %s\n", err)
+	} else {
+		data, _ := ioutil.ReadAll(response.Body)
+		temp := strings.Split(string(data), `\n`)
+		for _, element := range temp {
+			fmt.Println(element)
+			element = strings.Replace(element, "location: ", "", -1)
+			element = strings.Replace(element, "\n", ",", -1)
+			listOfShop = append(listOfShop, element)
+		}
+	}
+	fmt.Println(listOfShop)
+	return listOfShop
 }
 
 func ProError(w http.ResponseWriter, r *http.Request) {
@@ -145,13 +173,6 @@ func ReadCsvFile(filePath string) {
 			}
 		}
 	}
-	//fmt.Println(shopLoc[0])
-	//u := shopNamy{Name: shopLoc[0]}
-	//b := new(bytes.Buffer)
-	//json.NewEncoder(b).Encode(u)
-	//res, _ := http.Post("localhost:5000/getshop", "application/json; charset=utf-8", b)
-	//io.Copy(os.Stdout, res.Body)
-	//fmt.Println(res.Body)
 
 }
 
@@ -163,7 +184,9 @@ func GetItem(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var c_item []Label
 	var item SHOPPY
+	fmt.Println(r.Body)
 	_ = json.NewDecoder(r.Body).Decode(&item)
+	fmt.Println(item)
 	for i, _ := range shop {
 		if strings.Compare(shop[i].Product, item.Busan) == 0 {
 			c_item = append(c_item, Label{
@@ -181,7 +204,7 @@ func GetItem(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("NOT EMPTY")
 		json.NewEncoder(w).Encode("NOT FOUND")
 	} else {
-		fmt.Println(c_item)
+		//fmt.Println(c_item)
 		json.NewEncoder(w).Encode(c_item)
 	}
 	//fmt.Println(shop[0].Product)
@@ -217,20 +240,27 @@ func GetPlace(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetSearch(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Finish this code later")
-	json.NewEncoder(w).Encode(shoppingList)
+	w.Header().Set("Content-Type", "application/json")
+	var localShop currentLocation
+	_ = json.NewDecoder(r.Body).Decode(&localShop)
+	fmt.Println(localShop)
+
+	nearShop := makeHttpPostReq(localShop)
+
+	//I need to request the things
+	json.NewEncoder(w).Encode(nearShop)
 }
 
 // our main function
 func main() {
-	ReadCsvFile("./xaa.csv")
+	ReadCsvFile("./Book1.csv")
 	//Server being up
 	router := mux.NewRouter()
-	router.HandleFunc("/shop", raven.RecoveryHandler(GetShop)).Methods("GET")
-	router.HandleFunc("/error", raven.RecoveryHandler(ProError)).Methods("GET")
-	router.HandleFunc("/item", raven.RecoveryHandler(GetItem)).Methods("GET")
-	router.HandleFunc("/place", raven.RecoveryHandler(GetPlace)).Methods("GET")
-	router.HandleFunc("/search", raven.RecoveryHandler(GetSearch)).Methods("GET")
+	router.HandleFunc("/shop", raven.RecoveryHandler(GetShop)).Methods("POST")
+	router.HandleFunc("/error", raven.RecoveryHandler(ProError)).Methods("POST")
+	router.HandleFunc("/item", raven.RecoveryHandler(GetItem)).Methods("POST")
+	router.HandleFunc("/place", raven.RecoveryHandler(GetPlace)).Methods("POST")
+	router.HandleFunc("/search", raven.RecoveryHandler(GetSearch)).Methods("POST")
 	log.Fatal(http.ListenAndServe(":8000", router))
 	//
 }
