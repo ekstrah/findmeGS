@@ -159,6 +159,21 @@ def json_shoploc():
 
     return stringShops
 
+@app.route("/shoplocation/<geoloca>", methods=['POST'])
+def json_shopLocation(geoloca):
+    global shopLoc
+    tempArray = geoloca.split(",")
+    lat = float(tempArray[0])
+    lng = float(tempArray[1])
+    currentLoc = shoploca(lat, lng)
+    closeShop = findNear(currentLoc)
+    stringShops = ""
+    for word in closeShop:
+        stringShops  = stringShops + "location: " + word[0] +"\n"
+
+
+    return stringShops
+
 if __name__ == '__main__':
     
     initSetup()
