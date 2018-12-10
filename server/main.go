@@ -253,7 +253,7 @@ func GetSearch(w http.ResponseWriter, r *http.Request) {
 
 // our main function
 func main() {
-	ReadCsvFile("./xaa.csv")
+	ReadCsvFile("./Book1.csv")
 	//Server being up
 	router := mux.NewRouter()
 	router.HandleFunc("/shop", raven.RecoveryHandler(GetShop)).Methods("GET")

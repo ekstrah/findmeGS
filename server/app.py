@@ -7,6 +7,8 @@ import csv
 from operator import itemgetter
 from math import radians, sin, cos, acos
 import math
+import base64
+
 
 
 api_key = "AIzaSyBC5l9HMZ-egyxT888zQiQ_9D6XSilaCv0"
@@ -136,6 +138,11 @@ def getLngLat(shopName):
     
     return lat, lng
 
+def stringToBase64(s):
+    return base64.b64encode(s.encode('utf-8'))
+
+def base64ToString(b):
+    return base64.b64decode(b).decode('utf-8')
 app = Flask(__name__)
 
 @app.route("/")
@@ -159,21 +166,36 @@ def json_shoploc():
 
     return stringShops
 
-@app.route("/shoplocation/<geoloca>", methods=['POST'])
-def json_shopLocation(geoloca):
+@app.route("/shoplocation/<item>", methods=['POST'])
+def json_shopLocation(item):
     global shopLoc
-    tempArray = geoloca.split(",")
-    lat = float(tempArray[0])
-    lng = float(tempArray[1])
-    currentLoc = shoploca(lat, lng)
-    closeShop = findNear(currentLoc)
-    stringShops = ""
-    for word in closeShop:
-        stringShops  = stringShops + "location: " + word[0] +"\n"
+
+    if "," in item:#location
+        tempArray = item.split(",")
+        lat = float(tempArray[0])
+        lng = float(tempArray[1])
+        currentLoc = shoploca(lat, lng)
+        closeShop = findNear(currentLoc)
+        print("passed")
+        url = 'http://192.168.123.107:8000/place'
+        a = None
+        for word in closeShop:
+            print(word[0])
+            data = {"busan": word[0]}
+            r = requests.post(url, verify=False, json=data)
+            a = r.text
 
 
-    return stringShops
+# url = 'http://localhost:8000/item'
+# >>> 
+# >>> data = {"busan": "머거본 꿀땅콩(135g)"}
+# >>> r = requests.post(url,verify=False, json=data)
+# >>> 
+# >>> print(r.status_code)
+# 200
+# >>> print(r.body)
 
+    return a
 if __name__ == '__main__':
     
     initSetup()
