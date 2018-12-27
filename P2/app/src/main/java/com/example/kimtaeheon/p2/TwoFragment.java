@@ -13,12 +13,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-/**
- * Created by kkang
- * 깡샘의 안드로이드 프로그래밍 - 루비페이퍼
- * 위의 교제에 담겨져 있는 코드로 설명 및 활용 방법은 교제를 확인해 주세요.
- */
-
+/*ThreeFragment는 Store를 recyclerview로 보여주는 fragment이다.
+ * Arraylist<Stroe>를 매개변수로 받아서, reyclerview에 adpater를 연결한다.*/
 public class TwoFragment extends Fragment{
     CommunicationManager communicationManager;
     ListStoreAdapter adapter;

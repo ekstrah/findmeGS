@@ -20,7 +20,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
+/*CommunicationManger은 싱글턴 패턴으로 만든 Class입니다.
+* 이 Class는 2가지 경우에서 사용되는데 첫번 째는 Activity간에 통신이다.
+* 이 Program은 즐겨찾기 기능을 구현하는데 있어서 이 Class를 사용하여
+* Activity의 onCreate에서 이 객체를 호출하여 동기화를 한다.
+* 두 번째는 서버와의 통신에서 사용된다. 이 Class에서는 거의 모든 Activity에서 원하는
+* 상점데이터 및 물품데이터 정보를 서버에서 받아와 관리하고 전달한다.*/
 
 public class CommunicationManager {
     private Product product;
@@ -33,6 +38,7 @@ public class CommunicationManager {
 
     private CommunicationManager() {}
 
+    //CommunicationManager의 생성자이며 싱글턴 패턴을 위해 아래와 같이 구현했다.
     public static CommunicationManager getInstance(){
         if(communicationManager==null){
             synchronized (CommunicationManager.class){
@@ -46,6 +52,7 @@ public class CommunicationManager {
         return communicationManager;
     }
 
+    //상점정보를 받아오는  메서드
     public ArrayList<Store> initStore(){
         ArrayList<Store> stores = new ArrayList<>();
         if(products == null){
@@ -55,21 +62,11 @@ public class CommunicationManager {
         {
             stores.add(new Store(products.get(i).getLocation(), products.get(i).getSale()));
         }
-        /*
-        stores.add(new Store("GS", "Gs very very good~"));
-        stores.add(new Store("CU","CU dosikrock is delicious"));
-        stores.add(new Store("Sibal", "Sibal asdfkljaskj"));
-        stores.add(new Store("GS", "Gs very very good~"));
-        stores.add(new Store("CU","CU dosikrock is delicious"));
-        stores.add(new Store("Sibal", "Sibal asdfkljaskj"));
-        stores.add(new Store("GS", "Gs very very good~"));
-        stores.add(new Store("CU","CU dosikrock is delicious"));
-        stores.add(new Store("Sibal", "Sibal asdfkljaskj"));
-        */
 
         return stores;
     }
 
+    //물품정보를 받아오는 메서드
     public ArrayList<Product> initProduct(){
         ArrayList<Product> products = new ArrayList<>();
         if(this.products == null){
@@ -79,18 +76,6 @@ public class CommunicationManager {
         {
             products.add(new Product(this.products.get(i).getProductName(), this.products.get(i).getPrice()));
         }
-        /*products.add(new Product("sdfa", "adsfdsafsadfsad"));
-        products.add(new Product("asdfdsaf", "asdfdasf"));
-        products.add(new Product("sadfsfad", "fasdfadsfsdafasd."));
-        products.add(new Product("sdfa", "adsfdsafsadfsad"));
-        products.add(new Product("asdfdsaf", "asdfdasf"));
-        products.add(new Product("sadfsfad", "fasdfadsfsdafasd."));
-        products.add(new Product("sdfa", "adsfdsafsadfsad"));
-        products.add(new Product("asdfdsaf", "asdfdasf"));
-        products.add(new Product("sadfsfad", "fasdfadsfsdafasd."));
-        products.add(new Product("sdfa", "adsfdsafsadfsad"));
-        products.add(new Product("asdfdsaf", "asdfdasf"));
-        products.add(new Product("sadfsfad", "fasdfadsfsdafasd."));*/
 
         return products;
     }
@@ -109,6 +94,7 @@ public class CommunicationManager {
         return sp;
     }
 
+    //아이템의 이름을 매개변수로 주고 Arraylist를 받는 메서드
     public ArrayList<Product> searchStroe(String storeName, RecyclerView.Adapter<ListStoreHolder> adapter){
         final ArrayList<Product> pr = new ArrayList<>();
         for(int i = 0;i<products.size();i++)
@@ -120,28 +106,29 @@ public class CommunicationManager {
         }
         return pr;
     }
-    public void OccurMarkingTouch(ArrayList<Marker> marker)
-    {
 
-    }
-
+    //해당 아이템을 싱글턴패턴객체에 저장하는 메서드,
+    //서버에서 받아온 물품정보들을 싱글턴 패턴에 저장한다.
     public void setProducts(ArrayList products)
     {
         this.products=products;
     }
 
-    public void setFavoritProductsAdapter(ListProdouctAdapter adapter){
-        this.adapter = adapter;
-    }
-
+    //해당 아이템을 싱글턴패턴객체에 저장하는 메서드,
+    //product를 클릭할 시 해당 객체를 CommunucationManager에 저장하고,
+    //다른 Activity에서 접근하여 사용할수 있게한다.
     public void addFavoirtProduct(Product product){
         this.favorit_products.add(product);
     }
 
+    //즐겨찾기가 저장된 favorit_products를 get
     public ArrayList<Product> getFavorit_products() {
         return favorit_products;
     }
 
+    //해당 아이템을 싱글턴패턴객체에 저장하는 메서드,
+    //store 클릭할 시 해당 객체를 CommunucationManager에 저장하고,
+    //다른 Activity에서 접근하여 사용할수 있게한다.
     public Store changeActivityStore(Store store){
         if(store != null){
             this.store = store;
@@ -154,11 +141,10 @@ public class CommunicationManager {
         }
         return this.product;
     }
-    public void selectedTab(int p){
 
-    }
 }
 
+//해당 클래스는 list를 가격순으로 정렬하기 위해 제작하였다.
 class AscendingInteger implements Comparator<Store> {
 
     @Override

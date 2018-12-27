@@ -28,11 +28,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static java.lang.Thread.sleep;
 
-/**
- * Created by kkang
- * 깡샘의 안드로이드 프로그래밍 - 루비페이퍼
- * 위의 교제에 담겨져 있는 코드로 설명 및 활용 방법은 교제를 확인해 주세요.
- */
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener{
 
     ViewPager viewPager;
@@ -49,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //서버에서 정보를 받아옴
         retrofit = new Retrofit.Builder()
                 .baseUrl(RetrofitExService.URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -82,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         Log.e("Num",""+products.size());
         communicationManager.setProducts(products);
 
+        //viewpager에 adapter를 붙여준다.
         viewPager=(ViewPager)findViewById(R.id.viewpager);
         viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
 
@@ -103,12 +101,12 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         return super.onCreateOptionsMenu(menu);
     }
 
+    //메뉴에 있는 버튼을 클릭할 시 edittext에 있는 정보를 받아서
+    //검색을 하고, 해당 activity를 실시한다.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.menu_main_serach){
             String search = editText.getText().toString();
-            toast = Toast.makeText(MainActivity.this, search, Toast.LENGTH_SHORT);
-            toast.show();
             CommunicationManager.getInstance().changeActivityProduct(new Product(search, ""));
             Intent intent = new Intent(this, ProdouctDetailActivity.class);
             this.startActivity(intent);
@@ -117,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         return super.onOptionsItemSelected(item);
     }
 
+    //내부 클래스로 FragmentStatePagerAdapter를 상속받아서 정의해준다.
     class MyPagerAdapter extends FragmentStatePagerAdapter {
         List<Fragment> fragments=new ArrayList<>();
         String titles[]=new String[]{"", "",""};
@@ -131,8 +130,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         @Override
         public Fragment getItem(int position) {
-            toast = Toast.makeText(MainActivity.this, position + "", Toast.LENGTH_SHORT);
-            toast.show();
             if(position == 3) {
                 ThreeFragment f = (ThreeFragment) fragments.get(position);
                 f.adapter.notifyItemRangeChanged(0, f.adapter.getItemCount());
@@ -166,8 +163,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     public void onTabReselected(TabLayout.Tab tab) {
 
     }
-
-
 
 }
 

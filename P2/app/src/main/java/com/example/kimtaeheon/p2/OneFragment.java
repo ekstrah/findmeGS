@@ -33,6 +33,7 @@ import java.util.ArrayList;
 
 import static android.content.Context.LOCATION_SERVICE;
 
+/*one fragment는 이름을 잘못 지었다... 기능을 생각한다면 googleMapfragment이다.*/
 public class OneFragment extends Fragment implements OnMapReadyCallback,GoogleMap.OnMarkerClickListener {
 
 

@@ -11,6 +11,8 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+/*StoreDetailActivity는 특정 store를 클릭할 시 해당 상점이 팔고 있는
+ * 제품에 대해서 이 activity에 나타낸다.*/
 public class StoreDetailActivity extends AppCompatActivity {
     CommunicationManager communicationManager;
     ListProdouctAdapter adapter;
@@ -30,6 +32,8 @@ public class StoreDetailActivity extends AppCompatActivity {
         name=(TextView)findViewById(R.id.store_detail_name);
         explan=(TextView)findViewById(R.id.store_detail_explanation);
 
+        //commucnicationManager에서 store정보를 받아고 searchStroe를 이용하여
+        //해당 상점에 팔고있는 물품들의 정보를 가져온다.
         communicationManager = CommunicationManager.getInstance();
         store = communicationManager.changeActivityStore(null);
         ArrayList<Product> products = communicationManager.searchStroe(store.name, null);
@@ -37,6 +41,7 @@ public class StoreDetailActivity extends AppCompatActivity {
         name.setText(store.name);
         explan.setText(store.explanation);
 
+        //recyclerView에 adpater와 decoration을 달아준다.
         adapter = new ListProdouctAdapter(this, R.layout.list_product, products, Product.OPT.PLUS);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);

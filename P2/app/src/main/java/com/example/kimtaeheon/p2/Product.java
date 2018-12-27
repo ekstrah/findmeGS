@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+/*Product는 client에서 다루는 제품들의 정보를 담고 있는 class이다.*/
 public class Product {
     public enum OPT{NONE, PLUS, MIUS};
 
@@ -76,6 +77,9 @@ public class Product {
     }
 }
 
+//Listprocutholder은 RecyclerView구현에 있어서 효윻적으로 view에 접근하기 위해서
+//view의 아이디들을 기억해 놓는 class이다. 해당 class를 통해서
+//view들의 id들을 찾을 필요도 없어서 코드 길이가 줄어들고, 성능향상도 기대 할 수 있다.
 class ListProductHolder extends RecyclerView.ViewHolder{
     public ImageView image;
     public TextView name;
@@ -93,6 +97,7 @@ class ListProductHolder extends RecyclerView.ViewHolder{
     }
 }
 
+//recyclerview의 구현을 위한 adapter이다.
 class ListProdouctAdapter extends RecyclerView.Adapter<ListProductHolder>{
     Context context;
     int resId;
@@ -128,6 +133,9 @@ class ListProdouctAdapter extends RecyclerView.Adapter<ListProductHolder>{
         return new ListProductHolder(view);
     }
 
+    //해당 메소드에서 각 제품들을 정의해준다.
+    //list에 있는 각 product에 이름, 설명, 사진 등을 item에 대입하고,
+    //해당 item에 onClickListener도 설정해준다.
     @Override
     public void onBindViewHolder(@NonNull final ListProductHolder listProductHolder, int i) {
         final Product product = products.get(i);
@@ -136,18 +144,6 @@ class ListProdouctAdapter extends RecyclerView.Adapter<ListProductHolder>{
         listProductHolder.name.setText(product.name);
         listProductHolder.explan.setText(product.exlpan);
 
-        /*
-        if(product.name.equals("sdfa")){
-            listProductHolder.image.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
-                    R.drawable.ic_type_doc, null));
-        }else if(product.name.equals("asdfdsaf")){
-            listProductHolder.image.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
-                    R.drawable.ic_type_file, null));
-        }else if(product.name.equals("sadfsfad")){
-            listProductHolder.image.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
-                    R.drawable.ic_type_image, null));
-        }
-        */
         if(opt == Product.OPT.PLUS){
             listProductHolder.opt.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
                     R.drawable.plus, null));

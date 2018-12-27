@@ -26,6 +26,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+/*Store은 client에서 다루는 상점들의 정보를 담고 있는 class이다.*/
 public class Store {
 
     public enum OPT{NONE, PLUS, MIUS};
@@ -62,6 +63,9 @@ class ListStoreHolder extends RecyclerView.ViewHolder{
     }
 }
 
+//ListstoreAdapter은 RecyclerView구현에 있어서 효윻적으로 view에 접근하기 위해서
+//view의 아이디들을 기억해 놓는 class이다. 해당 class를 통해서
+//view들의 id들을 찾을 필요도 없어서 코드 길이가 줄어들고, 성능향상도 기대 할 수 있다.
 class ListStoreAdapter  extends RecyclerView.Adapter<ListStoreHolder>{
     Context context;
     int resId;
@@ -72,6 +76,7 @@ class ListStoreAdapter  extends RecyclerView.Adapter<ListStoreHolder>{
         this(context, resource, stores, Store.OPT.NONE);
     }
 
+    //recyclerview의 구현을 위한 adapter이다.
     public ListStoreAdapter(Context context, int resource, ArrayList<Store> stores, Store.OPT opt) {
         this.context = context;
         this.resId = resource;
@@ -95,6 +100,9 @@ class ListStoreAdapter  extends RecyclerView.Adapter<ListStoreHolder>{
         return new ListStoreHolder(view);
     }
 
+    //해당 메소드에서 각 상점들을 정의해준다.
+    //list에 있는 각 store 이름, 설명, 사진 등을 item에 대입하고,
+    //해당 item에 onClickListener도 설정해준다.
     @Override
     public void onBindViewHolder(@NonNull ListStoreHolder listStoreHolder, final int i) {
         int index = i;
@@ -102,19 +110,6 @@ class ListStoreAdapter  extends RecyclerView.Adapter<ListStoreHolder>{
 
         listStoreHolder.name.setText(store.name);
         listStoreHolder.explan.setText(store.explanation);
-
-        /*
-        if(store.name.equals("GS")){
-            listStoreHolder.image.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
-                    R.drawable.ic_type_doc, null));
-        }else if(store.name.equals("CU")){
-            listStoreHolder.image.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
-                    R.drawable.ic_type_file, null));
-        }else if(store.name.equals("Sibal")){
-            listStoreHolder.image.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(),
-                    R.drawable.ic_type_image, null));
-        }
-        */
 
         listStoreHolder.root.setOnClickListener(new View.OnClickListener() {
             @Override
